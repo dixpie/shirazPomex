@@ -1,0 +1,58 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  color: #17222b;
+}
+
+::selection {
+  background-color: #0073bc;
+  color: #ffffff;
+}
+
+.container-page {
+  @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8;
+}
+
+.btn-call {
+  @apply inline-flex items-center justify-center gap-2 rounded-xl bg-brand px-6 py-3 font-bold text-white shadow-card transition hover:bg-brand-600 active:scale-[0.98];
+}
+
+.btn-outline {
+  @apply inline-flex items-center justify-center gap-2 rounded-xl border-2 border-brand px-6 py-3 font-bold text-brand transition hover:bg-brand hover:text-white active:scale-[0.98];
+}
+
+.section-title {
+  @apply text-2xl font-extrabold text-brand-900 sm:text-3xl;
+}
+
+.prose-fa {
+  direction: rtl;
+}
+
+.admin-input {
+  @apply w-full rounded-xl border border-brand-100 px-4 py-2 text-sm focus:border-brand focus:outline-none;
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.marquee-track {
+  animation: marquee 28s linear infinite;
+}
+
+.bg-dot-pattern {
+  background-image: radial-gradient(circle, rgba(0, 115, 188, 0.16) 1.5px, transparent 1.5px);
+  background-size: 22px 22px;
+}
