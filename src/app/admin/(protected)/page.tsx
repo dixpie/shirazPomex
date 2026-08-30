@@ -3,6 +3,8 @@ import { dbConnect } from "@/lib/mongodb";
 import Product from "@/models/Product";
 import BlogPost from "@/models/BlogPost";
 
+export const dynamic = "force-dynamic";
+
 export default async function AdminDashboard() {
   await dbConnect();
   const [productCount, postCount, outOfStock] = await Promise.all([

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { getProducts, getCategories } from "@/lib/data";
+import { getProducts, getCategories, safe } from "@/lib/data";
 import ProductCard from "@/components/ProductCard";
 import { siteConfig } from "@/lib/siteConfig";
 import clsx from "clsx";
@@ -22,8 +22,8 @@ export default async function ProductsPage({
   const { category, q } = await searchParams;
 
   const [products, categories] = await Promise.all([
-    getProducts({ category, q }),
-    getCategories(),
+    safe(getProducts({ category, q }), []),
+    safe(getCategories(), []),
   ]);
 
   return (

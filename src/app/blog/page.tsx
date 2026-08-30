@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { getPosts } from "@/lib/data";
+import { getPosts, safe } from "@/lib/data";
 import BlogCard from "@/components/BlogCard";
 
 export const revalidate = 300;
@@ -18,7 +18,7 @@ export default async function BlogPage({
   searchParams: Promise<{ q?: string }>;
 }) {
   const { q } = await searchParams;
-  const posts = await getPosts({ q });
+  const posts = await safe(getPosts({ q }), []);
 
   return (
     <div className="container-page py-10">

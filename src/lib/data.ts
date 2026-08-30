@@ -18,6 +18,17 @@ function serialize<T>(doc: any): T {
   return JSON.parse(JSON.stringify(doc));
 }
 
+// Prevents a transient DB outage (e.g. during build-time prerendering)
+// from crashing the whole page — falls back to a safe default instead.
+export async function safe<T>(promise: Promise<T>, fallback: T): Promise<T> {
+  try {
+    return await promise;
+  } catch (err) {
+    console.error("Data fetch failed, using fallback:", err);
+    return fallback;
+  }
+}
+
 export async function getProducts(opts?: {
   category?: string;
   q?: string;

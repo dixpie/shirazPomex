@@ -1,6 +1,6 @@
 import Link from "next/link";
 import type { Metadata } from "next";
-import { getProducts, getPosts, getSiteStats } from "@/lib/data";
+import { getProducts, getPosts, getSiteStats, safe } from "@/lib/data";
 import ProductCard from "@/components/ProductCard";
 import BlogCard from "@/components/BlogCard";
 import Gallery from "@/components/Gallery";
@@ -64,10 +64,10 @@ const faqs = [
 
 export default async function HomePage() {
   const [featuredProducts, latestProducts, posts, stats] = await Promise.all([
-    getProducts({ featuredOnly: true, limit: 8 }),
-    getProducts({ limit: 8 }),
-    getPosts({ limit: 3 }),
-    getSiteStats(),
+    safe(getProducts({ featuredOnly: true, limit: 8 }), []),
+    safe(getProducts({ limit: 8 }), []),
+    safe(getPosts({ limit: 3 }), []),
+    safe(getSiteStats(), { productCount: 0, categoryCount: 0, postCount: 0 }),
   ]);
 
   const products = featuredProducts.length ? featuredProducts : latestProducts;

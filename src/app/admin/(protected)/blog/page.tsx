@@ -4,6 +4,8 @@ import { toJalaliDate } from "@/lib/format";
 import { deletePostAction } from "@/actions/blog";
 import DeleteButton from "@/components/admin/DeleteButton";
 
+export const dynamic = "force-dynamic";
+
 export default async function AdminBlogPage() {
   const posts = await getAllPostsAdmin();
 

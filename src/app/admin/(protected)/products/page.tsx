@@ -4,6 +4,8 @@ import { formatToman } from "@/lib/format";
 import { deleteProductAction } from "@/actions/products";
 import DeleteButton from "@/components/admin/DeleteButton";
 
+export const dynamic = "force-dynamic";
+
 export default async function AdminProductsPage() {
   const products = await getProducts();
 
