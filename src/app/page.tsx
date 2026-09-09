@@ -10,6 +10,9 @@ import Reveal from "@/components/motion/Reveal";
 import MotionCard from "@/components/motion/MotionCard";
 import Counter from "@/components/motion/Counter";
 import FloatingBlob from "@/components/motion/FloatingBlob";
+import HeroSlider from "@/components/motion/HeroSlider";
+import FarsMap from "@/components/motion/FarsMap";
+import ParallaxBackground from "@/components/motion/ParallaxBackground";
 import { siteConfig, telHref } from "@/lib/siteConfig";
 import { productLines } from "@/lib/categories";
 
@@ -87,20 +90,29 @@ export default async function HomePage() {
       />
 
       {/* Hero */}
-      <section className="relative overflow-hidden bg-gradient-to-b from-brand-50 to-white">
-        <FloatingBlob className="-right-16 -top-16 h-72 w-72 bg-brand-200/50" duration={7} />
-        <FloatingBlob className="-left-10 top-40 h-56 w-56 bg-brand-300/30" duration={9} delay={1.5} />
-        <div className="container-page relative grid items-center gap-10 py-16 md:grid-cols-2 md:py-24">
+      <section className="relative overflow-hidden bg-brand-900">
+        <HeroSlider
+          slides={[
+            { src: "/gallery/shop-1.jpg", alt: "فروشگاه نمایندگی پومکس شیراز" },
+            { src: "/gallery/warehouse-1.jpg", alt: "انبار محصولات پومکس" },
+            { src: "/gallery/delivery.jpg", alt: "آماده‌سازی و ارسال سفارشات پومکس" },
+            { src: "/gallery/team.jpg", alt: "تیم فنی و مشاوره پومکس شیراز" },
+          ]}
+        />
+        <div className="absolute inset-0 bg-gradient-to-l from-brand-900/95 via-brand-900/75 to-brand-900/25" />
+        <FloatingBlob className="-right-16 -top-16 h-72 w-72 bg-brand-300/20" duration={7} />
+        <FloatingBlob className="-left-10 top-40 h-56 w-56 bg-brand-200/15" duration={9} delay={1.5} />
+        <div className="container-page relative z-10 grid items-center gap-10 py-20 md:grid-cols-2 md:py-28">
           <Reveal>
-            <span className="mb-4 inline-block rounded-full bg-brand-100 px-4 py-1 text-sm font-bold text-brand-700">
+            <span className="mb-4 inline-block rounded-full bg-white/15 px-4 py-1 text-sm font-bold text-white backdrop-blur">
               نمایندگی رسمی پومکس در شیراز
             </span>
-            <h1 className="text-3xl font-extrabold leading-[1.4] text-brand-900 sm:text-4xl lg:text-5xl">
+            <h1 className="text-3xl font-extrabold leading-[1.4] text-white sm:text-4xl lg:text-5xl">
               چسب کاشی، افزودنی بتن و مواد آب‌بندی
               <br />
               پومکس با گارانتی اصالت
             </h1>
-            <p className="mt-5 max-w-xl text-lg leading-8 text-slate-600">
+            <p className="mt-5 max-w-xl text-lg leading-8 text-brand-100">
               {siteConfig.description}
             </p>
             <div className="mt-8 flex flex-wrap gap-4">
@@ -109,14 +121,15 @@ export default async function HomePage() {
                 size="lg"
                 className="w-auto"
               />
-              <Link href="/products" className="btn-outline">
+              <Link
+                href="/products"
+                className="btn-outline !border-white !text-white hover:!bg-white hover:!text-brand-900"
+              >
                 مشاهده محصولات
               </Link>
             </div>
           </Reveal>
-          <Reveal delay={0.15} className="relative mx-auto flex h-64 w-64 items-center justify-center rounded-full bg-brand-100 sm:h-80 sm:w-80">
-            <span className="text-8xl font-black text-brand/40">پ</span>
-          </Reveal>
+          <FarsMap className="mx-auto mt-4 max-w-xs sm:max-w-sm md:mt-0 md:max-w-none" />
         </div>
       </section>
 
@@ -152,29 +165,35 @@ export default async function HomePage() {
       </section>
 
       {/* Stats */}
-      <section className="bg-brand-50 py-14">
-        <div className="container-page grid grid-cols-2 gap-6 text-center sm:grid-cols-4">
-          <Reveal>
-            <div className="text-3xl font-black text-brand-700 sm:text-4xl">
+      <section className="relative overflow-hidden py-20">
+        <ParallaxBackground src="/gallery/warehouse-2.jpg" alt="انبار پومکس شیراز" />
+        <div className="absolute inset-0 bg-gradient-to-b from-brand-900/85 via-brand-900/75 to-brand-900/85" />
+        <div className="container-page relative z-10 grid grid-cols-2 gap-y-10 text-center sm:grid-cols-4 sm:divide-x sm:divide-white/15">
+          <Reveal className="flex flex-col items-center">
+            <StatIcon name="box" />
+            <div className="text-3xl font-black text-white sm:text-4xl">
               <Counter value={stats.productCount} suffix="+" />
             </div>
-            <div className="mt-2 text-sm font-medium text-slate-500">محصول موجود</div>
+            <div className="mt-2 text-sm font-medium text-brand-100">محصول موجود</div>
           </Reveal>
-          <Reveal delay={0.1}>
-            <div className="text-3xl font-black text-brand-700 sm:text-4xl">
+          <Reveal delay={0.1} className="flex flex-col items-center">
+            <StatIcon name="layers" />
+            <div className="text-3xl font-black text-white sm:text-4xl">
               <Counter value={stats.categoryCount} />
             </div>
-            <div className="mt-2 text-sm font-medium text-slate-500">دسته‌بندی محصول</div>
+            <div className="mt-2 text-sm font-medium text-brand-100">دسته‌بندی محصول</div>
           </Reveal>
-          <Reveal delay={0.2}>
-            <div className="text-3xl font-black text-brand-700 sm:text-4xl">
+          <Reveal delay={0.2} className="flex flex-col items-center">
+            <StatIcon name="doc" />
+            <div className="text-3xl font-black text-white sm:text-4xl">
               <Counter value={stats.postCount} />
             </div>
-            <div className="mt-2 text-sm font-medium text-slate-500">مقاله آموزشی</div>
+            <div className="mt-2 text-sm font-medium text-brand-100">مقاله آموزشی</div>
           </Reveal>
-          <Reveal delay={0.3}>
-            <div className="text-3xl font-black text-brand-700 sm:text-4xl">۱۰۰٪</div>
-            <div className="mt-2 text-sm font-medium text-slate-500">اصالت کالا</div>
+          <Reveal delay={0.3} className="flex flex-col items-center">
+            <StatIcon name="shield" />
+            <div className="text-3xl font-black text-white sm:text-4xl">۱۰۰٪</div>
+            <div className="mt-2 text-sm font-medium text-brand-100">اصالت کالا</div>
           </Reveal>
         </div>
       </section>
@@ -304,6 +323,22 @@ export default async function HomePage() {
         </div>
       </section>
     </>
+  );
+}
+
+function StatIcon({ name }: { name: "box" | "layers" | "doc" | "shield" }) {
+  const paths: Record<string, string> = {
+    box: "M12 2 3 6.5v11L12 22l9-4.5v-11L12 2zm0 2.2 6.2 3.1L12 10.4 5.8 7.3 12 4.2zM5 9l6 3v7.6l-6-3V9zm14 0v7.6l-6 3V12l6-3z",
+    layers: "M12 2 2 7l10 5 10-5-10-5zm0 8.2L4.4 7 12 3.8 19.6 7 12 10.2zM2 12l10 5 10-5-2-1-8 4-8-4-2 1zm0 5 10 5 10-5-2-1-8 4-8-4-2 1z",
+    doc: "M6 2h9l5 5v13a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2zm8 1.5V8h4.5L14 3.5zM8 12h8v1.6H8V12zm0 3.4h8V17H8v-1.6zm0-6.8h4v1.6H8V8.6z",
+    shield: "M12 2 4 5v6c0 5 3.4 8.9 8 10 4.6-1.1 8-5 8-10V5l-8-3zm0 2.2 6 2.3v4.7c0 3.9-2.6 6.9-6 7.9-3.4-1-6-4-6-7.9V6.5l6-2.3zM10.9 14l-2.2-2.2 1.4-1.4 0.8 0.8 3.4-3.4 1.4 1.4L10.9 14z",
+  };
+  return (
+    <span className="mb-3 flex h-12 w-12 items-center justify-center rounded-2xl bg-white/10 text-white ring-1 ring-inset ring-white/20">
+      <svg viewBox="0 0 24 24" className="h-6 w-6 fill-current">
+        <path d={paths[name]} />
+      </svg>
+    </span>
   );
 }
 

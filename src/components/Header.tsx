@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { siteConfig, telHref } from "@/lib/siteConfig";
 
 const navLinks = [
@@ -14,9 +15,7 @@ export default function Header() {
     <header className="sticky top-0 z-40 border-b border-brand-100 bg-white/95 backdrop-blur">
       <div className="container-page flex h-16 items-center justify-between gap-4">
         <Link href="/" className="flex items-center gap-2 shrink-0">
-          <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-brand text-lg font-black text-white">
-            پ
-          </span>
+          <Image src="/gallery/logo.png" className="w-10" alt="پومکس شیراز"  width={60} height={60} />
           <span className="flex flex-col leading-tight">
             <span className="text-lg font-extrabold text-brand-900">
               پومکس شیراز
