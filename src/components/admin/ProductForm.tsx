@@ -2,6 +2,7 @@
 
 import { useFormState, useFormStatus } from "react-dom";
 import { PlainProduct } from "@/lib/data";
+import { ILocalizedProduct } from "@/models/Product";
 
 type Action = (
   prevState: { error?: string } | undefined,
@@ -17,6 +18,53 @@ function SubmitButton({ label }: { label: string }) {
   );
 }
 
+type FieldDef = {
+  name: keyof ILocalizedProduct;
+  label: string;
+  required?: boolean;
+  multiline?: boolean;
+};
+
+const FA_FIELDS: FieldDef[] = [
+  { name: "name", label: "نام محصول *", required: true },
+  { name: "slug", label: "نامک (Slug) - اختیاری، در صورت خالی بودن خودکار ساخته می‌شود" },
+  { name: "description", label: "توضیح کوتاه", multiline: true },
+  { name: "features", label: "ویژگی‌ها (با ؛ از هم جدا شوند)", multiline: true },
+  { name: "useFor", label: "کاربرد (با ؛ از هم جدا شوند)", multiline: true },
+  { name: "usage", label: "روش مصرف", multiline: true },
+  { name: "consumption", label: "میزان مصرف" },
+  { name: "color", label: "رنگ" },
+  { name: "weight", label: "وزن" },
+  { name: "type", label: "نوع" },
+  { name: "packaging", label: "بسته‌بندی" },
+  { name: "mixingRatio", label: "نسبت اختلاط" },
+  { name: "density", label: "چگالی" },
+  { name: "ph", label: "pH" },
+  { name: "composition", label: "ترکیب", multiline: true },
+  { name: "technicalSpecs", label: "مشخصات فنی کامل", multiline: true },
+  { name: "standards", label: "استانداردها", multiline: true },
+  { name: "storage", label: "شرایط نگهداری" },
+  { name: "videoUrl", label: "لینک ویدیو" },
+  { name: "keyword", label: "کلمات کلیدی سئو", multiline: true },
+];
+
+const EN_FIELDS: FieldDef[] = [
+  { name: "name", label: "Name" },
+  { name: "slug", label: "Slug" },
+  { name: "description", label: "Description", multiline: true },
+  { name: "features", label: "Features", multiline: true },
+  { name: "useFor", label: "Use for", multiline: true },
+  { name: "usage", label: "Usage", multiline: true },
+  { name: "consumption", label: "Consumption" },
+  { name: "color", label: "Color" },
+  { name: "weight", label: "Weight" },
+  { name: "type", label: "Type" },
+  { name: "standards", label: "Standards", multiline: true },
+  { name: "storage", label: "Storage" },
+  { name: "videoUrl", label: "Video URL" },
+  { name: "keyword", label: "SEO keywords", multiline: true },
+];
+
 export default function ProductForm({
   action,
   product,
@@ -27,88 +75,100 @@ export default function ProductForm({
   const [state, formAction] = useFormState(action, undefined);
 
   return (
-    <form action={formAction} className="max-w-3xl space-y-5">
+    <form action={formAction} className="max-w-3xl space-y-8">
       {state?.error && (
         <p className="rounded-lg bg-red-50 px-4 py-2 text-sm text-red-600">{state.error}</p>
       )}
 
-      <div className="grid gap-5 sm:grid-cols-2">
-        <Field label="عنوان محصول *">
-          <input name="title" required defaultValue={product?.title} className="admin-input" />
-        </Field>
-        <Field label="نامک (Slug) - اختیاری">
-          <input name="slug" defaultValue={product?.slug} placeholder="در صورت خالی بودن خودکار ساخته می‌شود" className="admin-input" />
-        </Field>
-        <Field label="دسته‌بندی *">
-          <input name="category" required defaultValue={product?.category} className="admin-input" />
-        </Field>
-        <Field label="کد محصول / مدل">
-          <input name="model" defaultValue={product?.model} className="admin-input" />
-        </Field>
-        <Field label="قیمت (تومان) *">
-          <input name="price" type="number" min={0} required defaultValue={product?.price} className="admin-input" />
-        </Field>
-        <Field label="قیمت با تخفیف (تومان)">
-          <input name="discountPrice" type="number" min={0} defaultValue={product?.discountPrice} className="admin-input" />
-        </Field>
-      </div>
+      <section className="space-y-5">
+        <h2 className="font-bold text-brand-900">اطلاعات پایه</h2>
+        <div className="grid gap-5 sm:grid-cols-2">
+          <Field label="کد محصول *">
+            <input name="code" required defaultValue={product?.code} className="admin-input" />
+          </Field>
+          <Field label="دسته‌بندی *">
+            <input name="category" required defaultValue={product?.category} className="admin-input" />
+          </Field>
+          <Field label="قیمت (تومان) *">
+            <input name="price" type="number" min={0} required defaultValue={product?.price} className="admin-input" />
+          </Field>
+        </div>
+        <div className="flex gap-6">
+          <label className="flex items-center gap-2 text-sm font-medium text-slate-600">
+            <input type="checkbox" name="inStock" defaultChecked={product?.inStock ?? true} />
+            موجود در انبار
+          </label>
+          <label className="flex items-center gap-2 text-sm font-medium text-slate-600">
+            <input type="checkbox" name="isFeatured" defaultChecked={product?.isFeatured} />
+            نمایش در محصولات ویژه صفحه اصلی
+          </label>
+        </div>
+        <p className="text-xs text-slate-400">
+          تصویر محصول را با نام «{product?.code || "کد-محصول"}.webp» در فولدر public/gallery/products قرار دهید.
+        </p>
+      </section>
 
-      <Field label="تصاویر (هر آدرس URL در یک خط)">
-        <textarea
-          name="images"
-          rows={3}
-          defaultValue={product?.images?.join("\n")}
-          placeholder={"https://example.com/image1.jpg"}
-          className="admin-input"
-        />
-      </Field>
+      <section className="space-y-5">
+        <h2 className="font-bold text-brand-900">محتوای فارسی</h2>
+        <LocalizedFields prefix="fa" fields={FA_FIELDS} values={product?.fa} />
+      </section>
 
-      <Field label="توضیح کوتاه (برای کارت محصول و متا دیسکریپشن)">
-        <textarea name="shortDescription" rows={2} defaultValue={product?.shortDescription} className="admin-input" />
-      </Field>
-
-      <Field label="توضیحات کامل محصول">
-        <textarea name="description" rows={6} defaultValue={product?.description} className="admin-input" />
-      </Field>
-
-      <Field label="مشخصات فنی (هر مورد به شکل «کلید: مقدار» در یک خط)">
-        <textarea
-          name="specs"
-          rows={4}
-          defaultValue={product?.specs?.map((s) => `${s.key}: ${s.value}`).join("\n")}
-          placeholder={"رنگ: سفید\nگارانتی: 18 ماهه"}
-          className="admin-input"
-        />
-      </Field>
-
-      <div className="flex gap-6">
-        <label className="flex items-center gap-2 text-sm font-medium text-slate-600">
-          <input type="checkbox" name="inStock" defaultChecked={product?.inStock ?? true} />
-          موجود در انبار
-        </label>
-        <label className="flex items-center gap-2 text-sm font-medium text-slate-600">
-          <input type="checkbox" name="isFeatured" defaultChecked={product?.isFeatured} />
-          نمایش در محصولات ویژه صفحه اصلی
-        </label>
-      </div>
-
-      <div className="grid gap-5 sm:grid-cols-2">
-        <Field label="عنوان سئو (اختیاری)">
-          <input name="seoTitle" defaultValue={product?.seoTitle} className="admin-input" />
-        </Field>
-        <Field label="توضیحات متا سئو (اختیاری)">
-          <input name="seoDescription" defaultValue={product?.seoDescription} className="admin-input" />
-        </Field>
-      </div>
+      <section className="space-y-5">
+        <h2 className="font-bold text-brand-900">محتوای انگلیسی (اختیاری)</h2>
+        <LocalizedFields prefix="en" fields={EN_FIELDS} values={product?.en} />
+      </section>
 
       <SubmitButton label={product ? "ذخیره تغییرات" : "افزودن محصول"} />
     </form>
   );
 }
 
-function Field({ label, children }: { label: string; children: React.ReactNode }) {
+function LocalizedFields({
+  prefix,
+  fields,
+  values,
+}: {
+  prefix: "fa" | "en";
+  fields: FieldDef[];
+  values?: Partial<ILocalizedProduct>;
+}) {
   return (
-    <div>
+    <div className="grid gap-5 sm:grid-cols-2">
+      {fields.map((f) => (
+        <Field key={f.name} label={f.label} full={f.multiline}>
+          {f.multiline ? (
+            <textarea
+              name={`${prefix}_${f.name}`}
+              rows={3}
+              required={f.required}
+              defaultValue={values?.[f.name]}
+              className="admin-input"
+            />
+          ) : (
+            <input
+              name={`${prefix}_${f.name}`}
+              required={f.required}
+              defaultValue={values?.[f.name]}
+              className="admin-input"
+            />
+          )}
+        </Field>
+      ))}
+    </div>
+  );
+}
+
+function Field({
+  label,
+  children,
+  full,
+}: {
+  label: string;
+  children: React.ReactNode;
+  full?: boolean;
+}) {
+  return (
+    <div className={full ? "sm:col-span-2" : undefined}>
       <label className="mb-1.5 block text-sm font-bold text-brand-700">{label}</label>
       {children}
     </div>

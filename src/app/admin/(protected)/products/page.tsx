@@ -32,11 +32,11 @@ export default async function AdminProductsPage() {
           <tbody>
             {products.map((p) => (
               <tr key={p._id} className="border-t border-brand-50">
-                <td className="p-3 font-medium text-slate-700">{p.title}</td>
+                <td className="p-3 font-medium text-slate-700">{p.fa.name}</td>
                 <td className="p-3 text-slate-500">{p.category}</td>
                 <td className="p-3 text-slate-500">{formatToman(p.price)}</td>
                 <td className="p-3">
-                  {p.inStock ? (
+                  {(p.inStock ?? true) ? (
                     <span className="rounded-full bg-green-50 px-2 py-1 text-xs font-bold text-green-600">موجود</span>
                   ) : (
                     <span className="rounded-full bg-red-50 px-2 py-1 text-xs font-bold text-red-500">ناموجود</span>

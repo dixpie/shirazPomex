@@ -2,24 +2,24 @@ import Image from "next/image";
 import Link from "next/link";
 import { PlainProduct } from "@/lib/data";
 import { formatToman } from "@/lib/format";
+import { getProductImage } from "@/lib/productImage";
 import CallToOrderButton from "./CallToOrderButton";
 import MotionCard from "./motion/MotionCard";
 
 export default function ProductCard({ product }: { product: PlainProduct }) {
-  const hasDiscount =
-    !!product.discountPrice && product.discountPrice < product.price;
-  const cover = product.images?.[0];
+  const image = getProductImage(product.code);
+  const inStock = product.inStock ?? true;
 
   return (
     <MotionCard className="group flex flex-col overflow-hidden rounded-2xl border border-brand-100 bg-white shadow-card transition hover:shadow-lg">
       <Link
-        href={`/products/${product.slug}`}
+        href={`/products/${product.fa.slug}`}
         className="relative block aspect-square bg-brand-50"
       >
-        {cover ? (
+        {image.exists ? (
           <Image
-            src={cover}
-            alt={product.title}
+            src={image.src}
+            alt={product.fa.name}
             fill
             sizes="(max-width: 768px) 50vw, 25vw"
             className="object-contain p-4 transition group-hover:scale-105"
@@ -29,14 +29,9 @@ export default function ProductCard({ product }: { product: PlainProduct }) {
             بدون تصویر
           </div>
         )}
-        {!product.inStock && (
+        {!inStock && (
           <span className="absolute top-2 right-2 rounded-full bg-slate-700 px-3 py-1 text-xs font-bold text-white">
             ناموجود
-          </span>
-        )}
-        {hasDiscount && product.inStock && (
-          <span className="absolute top-2 right-2 rounded-full bg-red-500 px-3 py-1 text-xs font-bold text-white">
-            تخفیف ویژه
           </span>
         )}
       </Link>
@@ -46,27 +41,16 @@ export default function ProductCard({ product }: { product: PlainProduct }) {
           {product.category}
         </span>
         <Link
-          href={`/products/${product.slug}`}
+          href={`/products/${product.fa.slug}`}
           className="line-clamp-2 min-h-[2.7em] font-bold text-slate-800 hover:text-brand"
         >
-          {product.title}
+          {product.fa.name}
         </Link>
 
         <div className="mt-1 flex items-baseline gap-2">
-          {hasDiscount ? (
-            <>
-              <span className="text-lg font-extrabold text-brand-700">
-                {formatToman(product.discountPrice!)}
-              </span>
-              <span className="text-sm text-slate-400 line-through">
-                {formatToman(product.price)}
-              </span>
-            </>
-          ) : (
-            <span className="text-lg font-extrabold text-brand-700">
-              {formatToman(product.price)}
-            </span>
-          )}
+          <span className="text-lg font-extrabold text-brand-700">
+            {formatToman(product.price)}
+          </span>
         </div>
 
         <CallToOrderButton size="sm" className="mt-2" />

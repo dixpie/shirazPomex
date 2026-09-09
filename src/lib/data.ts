@@ -4,8 +4,8 @@ import BlogPost, { IBlogPost } from "@/models/BlogPost";
 
 export type PlainProduct = Omit<IProduct, "_id" | "createdAt" | "updatedAt"> & {
   _id: string;
-  createdAt: string;
-  updatedAt: string;
+  createdAt?: number;
+  updatedAt?: string;
 };
 
 export type PlainPost = Omit<IBlogPost, "_id" | "createdAt" | "updatedAt"> & {
@@ -41,7 +41,7 @@ export async function getProducts(opts?: {
   if (opts?.featuredOnly) filter.isFeatured = true;
   if (opts?.q) filter.$text = { $search: opts.q };
 
-  let query = Product.find(filter).sort({ createdAt: -1 });
+  let query = Product.find(filter).sort({ _id: -1 });
   if (opts?.limit) query = query.limit(opts.limit);
 
   const docs = await query.lean();
@@ -50,7 +50,7 @@ export async function getProducts(opts?: {
 
 export async function getProductBySlug(slug: string): Promise<PlainProduct | null> {
   await dbConnect();
-  const doc = await Product.findOne({ slug }).lean();
+  const doc = await Product.findOne({ "fa.slug": slug }).lean();
   return doc ? serialize(doc) : null;
 }
 
@@ -66,7 +66,7 @@ export async function getRelatedProducts(
   limit = 4
 ): Promise<PlainProduct[]> {
   await dbConnect();
-  const docs = await Product.find({ category, slug: { $ne: excludeSlug } })
+  const docs = await Product.find({ category, "fa.slug": { $ne: excludeSlug } })
     .limit(limit)
     .lean();
   return serialize(docs);

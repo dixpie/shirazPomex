@@ -3,51 +3,64 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { dbConnect } from "@/lib/mongodb";
-import Product from "@/models/Product";
+import Product, { ILocalizedProduct } from "@/models/Product";
 import { slugify } from "@/lib/slugify";
 import { isAdminAuthed } from "@/lib/auth";
 
-function parseLines(value: FormDataEntryValue | null): string[] {
-  return String(value || "")
-    .split("\n")
-    .map((s) => s.trim())
-    .filter(Boolean);
-}
+const LOCALIZED_KEYS: (keyof ILocalizedProduct)[] = [
+  "name",
+  "slug",
+  "keyword",
+  "description",
+  "features",
+  "useFor",
+  "consumption",
+  "color",
+  "weight",
+  "type",
+  "usage",
+  "standards",
+  "storage",
+  "videoUrl",
+  "composition",
+  "mixingRatio",
+  "density",
+  "ph",
+  "technicalSpecs",
+  "packaging",
+];
 
-function parseSpecs(value: FormDataEntryValue | null) {
-  return parseLines(value)
-    .map((line) => {
-      const idx = line.indexOf(":");
-      if (idx === -1) return null;
-      return {
-        key: line.slice(0, idx).trim(),
-        value: line.slice(idx + 1).trim(),
-      };
-    })
-    .filter((s): s is { key: string; value: string } => !!s && !!s.key && !!s.value);
+function buildLocalized(formData: FormData, prefix: "fa" | "en"): Partial<ILocalizedProduct> {
+  const out: Partial<ILocalizedProduct> = {};
+  for (const key of LOCALIZED_KEYS) {
+    const raw = formData.get(`${prefix}_${key}`);
+    if (raw === null) continue;
+    const value = String(raw).trim();
+    if (value) out[key] = value;
+  }
+  return out;
 }
 
 function buildProductData(formData: FormData) {
-  const title = String(formData.get("title") || "").trim();
-  const customSlug = String(formData.get("slug") || "").trim();
+  const code = String(formData.get("code") || "").trim();
   const price = Number(formData.get("price") || 0);
-  const discountRaw = String(formData.get("discountPrice") || "").trim();
+
+  const fa = buildLocalized(formData, "fa");
+  const en = buildLocalized(formData, "en");
+
+  fa.slug = slugify(fa.slug || fa.name || code);
+  if (en.name || en.slug) {
+    en.slug = slugify(en.slug || en.name || code);
+  }
 
   return {
-    title,
-    slug: slugify(customSlug || title),
+    code,
     category: String(formData.get("category") || "").trim(),
-    model: String(formData.get("model") || "").trim(),
     price,
-    discountPrice: discountRaw ? Number(discountRaw) : undefined,
-    images: parseLines(formData.get("images")),
-    shortDescription: String(formData.get("shortDescription") || "").trim(),
-    description: String(formData.get("description") || "").trim(),
-    specs: parseSpecs(formData.get("specs")),
     inStock: formData.get("inStock") === "on",
     isFeatured: formData.get("isFeatured") === "on",
-    seoTitle: String(formData.get("seoTitle") || "").trim() || undefined,
-    seoDescription: String(formData.get("seoDescription") || "").trim() || undefined,
+    fa,
+    en: en.name ? en : undefined,
   };
 }
 
@@ -58,8 +71,8 @@ export async function createProductAction(
   if (!(await isAdminAuthed())) return { error: "دسترسی غیرمجاز است." };
 
   const data = buildProductData(formData);
-  if (!data.title || !data.category || !data.price) {
-    return { error: "عنوان، دسته‌بندی و قیمت الزامی هستند." };
+  if (!data.code || !data.category || !data.fa.name) {
+    return { error: "کد محصول، دسته‌بندی و نام فارسی الزامی هستند." };
   }
 
   await dbConnect();
@@ -67,7 +80,7 @@ export async function createProductAction(
     await Product.create(data);
   } catch (err: any) {
     if (err?.code === 11000) {
-      return { error: "محصولی با این نامک (slug) قبلا ثبت شده است." };
+      return { error: "محصولی با این کد یا نامک قبلا ثبت شده است." };
     }
     return { error: "خطا در ذخیره‌سازی محصول." };
   }
@@ -86,23 +99,33 @@ export async function updateProductAction(
   if (!(await isAdminAuthed())) return { error: "دسترسی غیرمجاز است." };
 
   const data = buildProductData(formData);
-  if (!data.title || !data.category || !data.price) {
-    return { error: "عنوان، دسته‌بندی و قیمت الزامی هستند." };
+  if (!data.code || !data.category || !data.fa.name) {
+    return { error: "کد محصول، دسته‌بندی و نام فارسی الزامی هستند." };
   }
 
   await dbConnect();
   try {
-    await Product.findByIdAndUpdate(id, data);
+    await Product.findByIdAndUpdate(id, {
+      $set: {
+        code: data.code,
+        category: data.category,
+        price: data.price,
+        inStock: data.inStock,
+        isFeatured: data.isFeatured,
+        fa: data.fa,
+        en: data.en,
+      },
+    });
   } catch (err: any) {
     if (err?.code === 11000) {
-      return { error: "محصولی با این نامک (slug) قبلا ثبت شده است." };
+      return { error: "محصولی با این کد یا نامک قبلا ثبت شده است." };
     }
     return { error: "خطا در بروزرسانی محصول." };
   }
 
   revalidatePath("/admin/products");
   revalidatePath("/products");
-  revalidatePath(`/products/${data.slug}`);
+  revalidatePath(`/products/${data.fa.slug}`);
   revalidatePath("/");
   redirect("/admin/products");
 }
