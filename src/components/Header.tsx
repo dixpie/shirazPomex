@@ -20,7 +20,7 @@ export default function Header() {
             <span className="text-lg font-extrabold text-brand-900">
               پومکس شیراز
             </span>
-            <span className="text-[11px] text-brand-600">نمایندگی رسمی</span>
+            <span className="text-[11px] text-brand-600"> نمایندگی انحصاری استان فارس</span>
           </span>
         </Link>
 
