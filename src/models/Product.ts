@@ -96,6 +96,9 @@ const LocalizedSchema = new Schema<ILocalizedProduct>(
 
 const ProductSchema = new Schema<IProduct>(
   {
+    // The catalog mixes real ObjectIds with custom string ids (e.g. "POMEX-2026-wallmesh"),
+    // so _id must stay untyped to avoid Mongoose's default ObjectId cast on findById/findByIdAndUpdate.
+    _id: Schema.Types.Mixed,
     code: { type: String, required: true, unique: true, trim: true, index: true },
     category: { type: String, required: true, trim: true, index: true },
     price: { type: Number, required: true, min: 0, default: 0 },
