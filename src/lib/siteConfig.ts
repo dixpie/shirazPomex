@@ -4,7 +4,7 @@ export const siteConfig = {
   tagline: "تولیدکننده چسب کاشی، افزودنی‌های بتن و مواد آب‌بندی",
   description:
     "نمایندگی رسمی پومکس در شیراز، عرضه‌کننده چسب کاشی، افزودنی‌های بتن و مواد آب‌بندی (عایق رطوبتی) پومکس با گارانتی اصالت و ضمانت شرکتی. برای مشاوره فنی رایگان و استعلام قیمت با ما تماس بگیرید.",
-  url: process.env.NEXT_PUBLIC_SITE_URL || "http://pomexshiraz.ir",
+  url: process.env.NEXT_PUBLIC_SITE_URL || "https://pomexshiraz.ir",
   phone: process.env.NEXT_PUBLIC_PHONE || "09179120624",
   phoneDisplay: process.env.NEXT_PUBLIC_PHONE_DISPLAY || "0917 912 0624",
   landline: process.env.NEXT_PUBLIC_LANDLINE || "07132001234",
