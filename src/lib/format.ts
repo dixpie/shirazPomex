@@ -1,6 +1,7 @@
 import jalaali from "jalaali-js";
 
 export function formatToman(value: number): string {
+  if (!value) return "برای استعلام قیمت تماس بگیرید";
   return new Intl.NumberFormat("fa-IR").format(value) + " تومان";
 }
 
