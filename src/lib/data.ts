@@ -1,5 +1,5 @@
 import { dbConnect } from "@/lib/mongodb";
-import Product, { IProduct } from "@/models/Product";
+import Product, { IProduct, toProductId } from "@/models/Product";
 import BlogPost, { IBlogPost } from "@/models/BlogPost";
 
 export type PlainProduct = Omit<IProduct, "_id" | "createdAt" | "updatedAt"> & {
@@ -101,7 +101,7 @@ export async function getPostByIdAdmin(id: string): Promise<PlainPost | null> {
 
 export async function getProductByIdAdmin(id: string): Promise<PlainProduct | null> {
   await dbConnect();
-  const doc = await Product.findById(id).lean();
+  const doc = await Product.findOne({ _id: toProductId(id) }).lean();
   return doc ? serialize(doc) : null;
 }
 

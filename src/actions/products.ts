@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { dbConnect } from "@/lib/mongodb";
-import Product, { ILocalizedProduct } from "@/models/Product";
+import Product, { ILocalizedProduct, toProductId } from "@/models/Product";
 import { slugify } from "@/lib/slugify";
 import { isAdminAuthed } from "@/lib/auth";
 
@@ -105,7 +105,7 @@ export async function updateProductAction(
 
   await dbConnect();
   try {
-    await Product.findByIdAndUpdate(id, {
+    await Product.findOneAndUpdate({ _id: toProductId(id) }, {
       $set: {
         code: data.code,
         category: data.category,
@@ -133,7 +133,7 @@ export async function updateProductAction(
 export async function deleteProductAction(id: string) {
   if (!(await isAdminAuthed())) return;
   await dbConnect();
-  await Product.findByIdAndDelete(id);
+  await Product.findOneAndDelete({ _id: toProductId(id) });
   revalidatePath("/admin/products");
   revalidatePath("/products");
   revalidatePath("/");

@@ -148,4 +148,10 @@ const ProductSchema = new Schema<IProduct>(
 ProductSchema.index({ "fa.slug": 1 }, { unique: true });
 ProductSchema.index({ "fa.name": "text", "fa.description": "text", category: "text" });
 
+// _id is Mixed (see above), so Mongoose won't auto-cast id strings to ObjectId
+// on findById/findByIdAndUpdate/findByIdAndDelete. Use this to build the filter instead.
+export function toProductId(id: string): string | mongoose.Types.ObjectId {
+  return /^[0-9a-fA-F]{24}$/.test(id) ? new mongoose.Types.ObjectId(id) : id;
+}
+
 export default models.Product || model<IProduct>("Product", ProductSchema);
