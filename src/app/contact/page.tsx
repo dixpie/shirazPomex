@@ -22,8 +22,8 @@ export default function ContactPage() {
       <div className="grid gap-10 lg:grid-cols-2">
         <div className="space-y-6">
           <InfoRow label="تلفن همراه">
-            <a href={telHref(siteConfig.phone)} dir="ltr" className="text-xl font-bold text-brand hover:underline">
-              {siteConfig.phoneDisplay}
+            <a href="09179120624" dir="ltr" className="text-xl font-bold text-brand hover:underline">
+              09179120624
             </a>
           </InfoRow>
           <InfoRow label="تلفن ثابت">

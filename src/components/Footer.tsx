@@ -28,8 +28,8 @@ export default function Footer() {
           <h3 className="mb-3 text-lg font-extrabold text-white">اطلاعات تماس</h3>
           <ul className="space-y-2 text-sm">
             <li>
-              <a href={telHref(siteConfig.phone)} className="hover:text-white" dir="ltr">
-                {siteConfig.phoneDisplay}
+              <a href="09179120624" className="hover:text-white" dir="ltr">
+                09179120624
               </a>
             </li>
             <li>

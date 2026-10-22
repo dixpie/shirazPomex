@@ -277,8 +277,8 @@ export default async function HomePage() {
             </p>
           </Reveal>
           <Reveal delay={0.15} className="flex flex-col items-start gap-3 md:items-end">
-            <a href={telHref(siteConfig.phone)} dir="ltr" className="text-3xl font-black text-white hover:underline">
-              {siteConfig.phoneDisplay}
+            <a href="09179120624" dir="ltr" className="text-3xl font-black text-white hover:underline">
+              09179120624
             </a>
             <a href={telHref(siteConfig.landline)} dir="ltr" className="text-lg font-bold text-brand-100 hover:underline">
               {siteConfig.landlineDisplay}

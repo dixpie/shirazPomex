@@ -37,7 +37,7 @@ export default function Header() {
         </nav>
 
         <a
-          href={telHref(siteConfig.phone)}
+          href="09179120624"
           className="btn-call hidden !px-4 !py-2 text-sm sm:inline-flex"
         >
           <PhoneIcon />
@@ -78,7 +78,7 @@ function MobileMenu() {
             </Link>
           ))}
           <a
-            href={telHref(siteConfig.phone)}
+            href="09179120624"
             className="btn-call mt-1 !px-4 !py-2 text-sm"
           >
             تماس فوری با نمایندگی

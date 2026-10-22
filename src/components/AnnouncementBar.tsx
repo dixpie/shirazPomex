@@ -11,7 +11,7 @@ export default function AnnouncementBar() {
   const line = items.join("   •   ");
   return (
     <a
-      href={telHref(siteConfig.phone)}
+      href="09179120624"
       className="block overflow-hidden whitespace-nowrap bg-brand-900 py-2 text-xs font-medium text-brand-100"
       aria-label="اطلاعیه‌های پومکس شیراز"
     >
