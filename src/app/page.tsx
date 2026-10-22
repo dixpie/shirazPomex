@@ -117,7 +117,7 @@ export default async function HomePage() {
             </p>
             <div className="mt-8 flex flex-wrap gap-4">
               <CallToOrderButton
-                label={`تماس با ${siteConfig.phoneDisplay}`}
+                label={`تماس با 0917 912 0624`}
                 size="lg"
                 className="w-auto"
               />

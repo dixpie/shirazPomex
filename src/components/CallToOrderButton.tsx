@@ -12,7 +12,7 @@ export default function CallToOrderButton({
 }) {
   return (
     <a
-      href="09179120624"
+      href="tel:09179120624"
       className={clsx(
         "btn-call w-full",
         size === "sm" && "!px-4 !py-2 text-sm",
