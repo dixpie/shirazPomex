@@ -114,36 +114,7 @@ export default async function HomePage() {
 ].map((item,i)=><Link href={`/products?category=${encodeURIComponent(item.category)}`} className={`inspiration-tile tile-${i}`} key={item.title}><Image src={item.src} alt={item.sub} fill sizes="(max-width:768px) 90vw, 50vw"/><div><span>{item.sub}</span><h3>{item.title}</h3><b>کشف راهکار ↙</b></div></Link>)}</div><p className="mt-4 text-sm text-slate-500">تصاویر این بخش برای نمایش کاربردها هستند و به‌معنای اجرای این پروژه‌ها توسط نمایندگی نیستند.</p></section>
       <ProjectGuide/>
       <section className="showroom-band"><div className="container-page showroom-grid"><Reveal><span className="eyebrow">پشت این سایت، یک مسیر ارتباط واقعی است</span><h2>محصول را ببینید.<br/>سؤال بپرسید.<br/><em>با آگاهی سفارش بدهید.</em></h2><p>تصاویر فروشگاه و انبار را بررسی کنید و پیش از مراجعه، برای تأیید آدرس، موجودی و شرایط تحویل تماس بگیرید.</p><a className="btn-call" href={telHref(siteConfig.phone)}>ارتباط مستقیم · {siteConfig.phoneDisplay}</a></Reveal><div className="showroom-mosaic"><img src="/gallery/shop-1.jpg" alt="تصویر فروشگاه پومکس شیراز" width="700" height="600" loading="lazy"/><img src="/gallery/delivery.jpg" alt="آماده‌سازی سفارش محصولات" width="450" height="350" loading="lazy"/><div><span>مشاوره تا سفارش</span><strong>یک تماس، شروع انتخاب بهتر.</strong><Link href="/contact">راه‌های ارتباطی ↙</Link></div></div></div></section>
-      {/* Product lines */}
-      <section className="container-page py-14">
-        <Reveal>
-          <h2 className="section-title mb-2">خط تولید محصولات پومکس</h2>
-          <p className="mb-8 max-w-2xl text-slate-500">
-            سه دسته اصلی محصولات ساختمانی پومکس که در نمایندگی شیراز موجود است.
-          </p>
-        </Reveal>
-        <div className="grid gap-6 md:grid-cols-3">
-          {productLines.map((line, i) => (
-            <MotionCard
-              key={line.slug}
-              delay={i * 0.1}
-              className="rounded-2xl border border-brand-100 bg-white p-6 shadow-card"
-            >
-              <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-xl bg-brand-50 text-brand">
-                <CategoryIcon name={line.icon} />
-              </div>
-              <h3 className="mb-2 text-lg font-extrabold text-brand-900">{line.name}</h3>
-              <p className="mb-4 text-sm leading-7 text-slate-500">{line.description}</p>
-              <Link
-                href={`/products?category=${encodeURIComponent(line.slug)}`}
-                className="text-sm font-bold text-brand hover:underline"
-              >
-                مشاهده محصولات ←
-              </Link>
-            </MotionCard>
-          ))}
-        </div>
-      </section>
+      <section className="container-page py-16"><div className="section-heading"><div><span className="eyebrow">خانوادهٔ محصولات / POMEX</span><h2 className="section-title mt-3">خط تولید محصولات پومکس</h2></div><a className="btn-call" href={telHref(siteConfig.phone)}>برای انتخاب محصول تماس بگیرید</a></div><div className="production-grid">{productLines.map((line,i)=><MotionCard key={line.slug} delay={i*.1} className="production-card"><div className="production-photo"><Image src={['/gallery/Apply%20the%20Adhesive.jpg.webp','/gallery/Construction-workers-concrete.webp','/gallery/Cementitious%20Waterproofing.webp'][i]} alt={line.name} fill sizes="(max-width:768px) 90vw, 33vw"/><span>0{i+1} / POMEX</span></div><div className="production-content"><div className="production-symbol"><CategoryIcon name={line.icon}/></div><h3>{line.name}</h3><p>{line.description}</p><div className="production-actions"><Link href={`/products?category=${encodeURIComponent(line.slug)}`}>مشخصات محصولات ↙</Link><a href={telHref(siteConfig.phone)}>استعلام تلفنی ☎</a></div></div></MotionCard>)}</div></section>
 
       {/* Features */}
       <section className="container-page py-14">
@@ -152,9 +123,9 @@ export default async function HomePage() {
             <MotionCard
               key={f.title}
               delay={i * 0.08}
-              className="rounded-2xl border border-brand-100 bg-white p-6 shadow-card"
+              className="service-card rounded-2xl border border-brand-100 bg-white p-6 shadow-card"
             >
-              <h3 className="mb-2 font-bold text-brand-800">{f.title}</h3>
+              <span className="service-number">0{i+1}</span><h3 className="mb-2 font-bold text-brand-800">{f.title}</h3>
               <p className="text-sm leading-6 text-slate-500">{f.desc}</p>
             </MotionCard>
           ))}
@@ -188,7 +159,7 @@ export default async function HomePage() {
         </Reveal>
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {steps.map((step, i) => (
-            <Reveal key={step.title} delay={i * 0.1} className="relative rounded-2xl border border-brand-100 bg-white p-6 shadow-card">
+            <Reveal key={step.title} delay={i * 0.1} className="order-step relative rounded-2xl border border-brand-100 bg-white p-6 shadow-card">
               <span className="mb-3 flex h-9 w-9 items-center justify-center rounded-full bg-brand text-sm font-black text-white">
                 {i + 1}
               </span>
@@ -199,6 +170,7 @@ export default async function HomePage() {
         </div>
       </section>
 
+      <section className="container-page pb-10"><div className="consultation-strip"><Image src="/gallery/Bostik-DIY-UK-How-to-tile-a-wall-using-ready-step-4.jpg" alt="نصب کاشی روی زیرکار آماده" width={300} height={220}/><div><span className="eyebrow">قبل از خرید، یک سؤال خوب بپرسید</span><h2>کدام محصول برای زیرکار شما مناسب است؟</h2><p>نوع سطح، متراژ و شرایط اجرا را بگویید تا انتخاب را دقیق‌تر بررسی کنیم.</p></div><CallToOrderButton label="تماس برای مشاوره و قیمت" className="!w-auto shrink-0"/></div></section>
       {/* Gallery */}
       <section className="container-page py-14">
         <Reveal>

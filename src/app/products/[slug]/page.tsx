@@ -4,7 +4,6 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import { getProductBySlug, getRelatedProducts } from "@/lib/data";
 import { decodeSlug } from "@/lib/slugify";
-import { formatToman } from "@/lib/format";
 import { getProductImage } from "@/lib/productImage";
 import CallToOrderButton from "@/components/CallToOrderButton";
 import ProductCard from "@/components/ProductCard";
@@ -80,20 +79,11 @@ export default async function ProductDetailPage({ params }: Props) {
           "@context": "https://schema.org",
           "@type": "Product",
           name: product.fa.name,
-          image: image.exists ? [image.src] : undefined,
+          image: image.exists ? [new URL(image.src, siteConfig.url).href] : undefined,
           description: product.fa.description,
           sku: product.code,
           brand: { "@type": "Brand", name: siteConfig.brand },
-          offers: {
-            "@type": "Offer",
-            url: `${siteConfig.url}/products/${product.fa.slug}`,
-            priceCurrency: "IRR",
-            price: product.price * 10,
-            availability: inStock
-              ? "https://schema.org/InStock"
-              : "https://schema.org/OutOfStock",
-            itemCondition: "https://schema.org/NewCondition",
-          },
+
         }}
       />
       <JsonLd
@@ -148,8 +138,8 @@ export default async function ProductDetailPage({ params }: Props) {
           <p className="mt-1 text-sm text-slate-400">کد محصول: {product.code}</p>
 
           <div className="mt-5 flex items-baseline gap-3">
-            <span className="text-3xl font-black text-brand-700">
-              {formatToman(product.price)}
+            <span className="text-lg font-black text-brand-700">
+              برای استعلام قیمت تماس بگیرید
             </span>
           </div>
 
@@ -166,7 +156,7 @@ export default async function ProductDetailPage({ params }: Props) {
           )}
 
           <div className="mt-6">
-            <CallToOrderButton size="lg" label="برای خرید تماس بگیرید" />
+            <CallToOrderButton size="lg" label="برای استعلام قیمت تماس بگیرید" />
             <p className="mt-3 text-center text-xs text-slate-400 lg:text-right">
               همکاران ما شماره شما را ذخیره نمی‌کنند و صرفا برای مشاوره خرید در دسترس هستند.
             </p>

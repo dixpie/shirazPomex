@@ -1,6 +1,6 @@
 import { MetadataRoute } from "next";
 import { siteConfig } from "@/lib/siteConfig";
-import { getProducts, getPosts } from "@/lib/data";
+import { getProducts, getPosts, safe } from "@/lib/data";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const staticRoutes: MetadataRoute.Sitemap = [
@@ -13,8 +13,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   try {
     const [products, posts] = await Promise.all([
-      getProducts(),
-      getPosts(),
+      safe(getProducts(), []),
+      safe(getPosts(), []),
     ]);
 
     const productRoutes: MetadataRoute.Sitemap = products.map((p) => ({
@@ -24,7 +24,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.8,
     }));
 
-    const postRoutes: MetadataRoute.Sitemap = posts.map((p) => ({
+    const postRoutes: MetadataRoute.Sitemap = posts.filter(p => !p.sourceUrl).map((p) => ({
       url: `${siteConfig.url}/blog/${p.slug}`,
       lastModified: new Date(p.updatedAt),
       changeFrequency: "monthly",

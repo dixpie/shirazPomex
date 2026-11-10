@@ -2,7 +2,7 @@ import { siteConfig, telHref } from "@/lib/siteConfig";
 import clsx from "clsx";
 
 export default function CallToOrderButton({
-  label = "تماس برای خرید",
+  label = "تماس برای استعلام قیمت",
   className,
   size = "md",
 }: {
@@ -12,7 +12,7 @@ export default function CallToOrderButton({
 }) {
   return (
     <a
-      href="tel:09179120624"
+      href={telHref(siteConfig.phone)}
       className={clsx(
         "btn-call w-full",
         size === "sm" && "!px-4 !py-2 text-sm",

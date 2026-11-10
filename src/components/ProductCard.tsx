@@ -1,7 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import { PlainProduct } from "@/lib/data";
-import { formatToman } from "@/lib/format";
 import { getProductImage } from "@/lib/productImage";
 import CallToOrderButton from "./CallToOrderButton";
 import MotionCard from "./motion/MotionCard";
@@ -48,8 +47,8 @@ export default function ProductCard({ product }: { product: PlainProduct }) {
         </Link>
 
         <div className="mt-1 flex items-baseline gap-2">
-          <span className="text-lg font-extrabold text-brand-700">
-            {formatToman(product.price)}
+          <span className="text-sm font-extrabold leading-7 text-brand-700">
+            برای استعلام قیمت تماس بگیرید
           </span>
         </div>
 

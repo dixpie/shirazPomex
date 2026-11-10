@@ -73,7 +73,6 @@ export default function RootLayout({
             image: `${siteConfig.url}/opengraph-image`,
             url: siteConfig.url,
             telephone: siteConfig.phone,
-            priceRange: "$$",
             address: {
               "@type": "PostalAddress",
               streetAddress: siteConfig.address,
