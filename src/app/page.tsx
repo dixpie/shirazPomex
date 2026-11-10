@@ -1,3 +1,4 @@
+import ProjectGuide from "@/components/ProjectGuide";
 import Link from "next/link";
 import type { Metadata } from "next";
 import { getProducts, getPosts, safe } from "@/lib/data";
@@ -98,6 +99,14 @@ export default async function HomePage() {
       </section>
       <section className="container-page project-picker"><div><span className="eyebrow">از نیاز پروژه شروع کنید</span><h2>برای کدام بخش ساختمان؟</h2></div><Link href="/products?category=چسب%20کاشی">نصب کاشی و پرسلان ↙</Link><Link href="/products?category=آب%20بندی">رفع نم و آب‌بندی ↙</Link><Link href="/products?category=افزودنی%20بتن">اجرای بتن ↙</Link></section>
 
+      <div className="material-ribbon" aria-label="حوزه‌های محصولات"><div>{[0,1].map(i=><span key={i} aria-hidden={i===1}>POMEX ✦ چسب کاشی و پرسلان ✦ آب‌بندی استخر و تراس ✦ افزودنی‌های بتن ✦ مشاوره انتخاب محصول ✦ شیراز و استان فارس ✦ </span>)}</div></div>
+      <section className="container-page py-14"><Reveal className="section-heading"><div><span className="eyebrow">راهکار، برای هر مرحلهٔ ساخت</span><h2 className="section-title mt-3">از یک اتصال دقیق، تا یک سازهٔ ماندگار</h2></div><Link href="/products">همهٔ محصولات ↙</Link></Reveal><div className="application-grid">{[
+        {title:'نصب دقیق. نمای یکدست.',label:'چسب کاشی و سرامیک',image:'/gallery/header.png',category:'چسب کاشی',text:'برای انتخاب چسب متناسب با پرسلان، کاشی و نوع زیرکار.'},
+        {title:'رطوبت را جدی بگیرید.',label:'سیستم‌های آب‌بندی',image:'/gallery/warehouse-1.jpg',category:'آب بندی',text:'بررسی راهکار مناسب استخر، تراس و محیط‌های مرطوب.'},
+        {title:'کیفیت، از زیرسازی شروع می‌شود.',label:'افزودنی‌های بتن',image:'/gallery/warehouse-2.jpg',category:'افزودنی بتن',text:'انتخاب افزودنی با توجه به نیاز فنی و شرایط اجرا.'}
+      ].map((item,i)=><MotionCard key={item.category} delay={i*.1} className="application-card"><img src={item.image} alt={item.label+' پومکس شیراز'} width="650" height="500" loading="lazy"/><div><span>0{i+1} / {item.label}</span><h3>{item.title}</h3><p>{item.text}</p><Link href={`/products?category=${encodeURIComponent(item.category)}`}>انتخاب محصول ↙</Link></div></MotionCard>)}</div></section>
+      <ProjectGuide/>
+      <section className="showroom-band"><div className="container-page showroom-grid"><Reveal><span className="eyebrow">پشت این سایت، یک مسیر ارتباط واقعی است</span><h2>محصول را ببینید.<br/>سؤال بپرسید.<br/><em>با آگاهی سفارش بدهید.</em></h2><p>تصاویر فروشگاه و انبار را بررسی کنید و پیش از مراجعه، برای تأیید آدرس، موجودی و شرایط تحویل تماس بگیرید.</p><a className="btn-call" href={telHref(siteConfig.phone)}>ارتباط مستقیم · {siteConfig.phoneDisplay}</a></Reveal><div className="showroom-mosaic"><img src="/gallery/shop-1.jpg" alt="تصویر فروشگاه پومکس شیراز" width="700" height="600" loading="lazy"/><img src="/gallery/delivery.jpg" alt="آماده‌سازی سفارش محصولات" width="450" height="350" loading="lazy"/><div><span>مشاوره تا سفارش</span><strong>یک تماس، شروع انتخاب بهتر.</strong><Link href="/contact">راه‌های ارتباطی ↙</Link></div></div></div></section>
       {/* Product lines */}
       <section className="container-page py-14">
         <Reveal>
