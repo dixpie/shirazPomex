@@ -1,3 +1,4 @@
+import Image from "next/image";
 import ProjectGuide from "@/components/ProjectGuide";
 import Link from "next/link";
 import type { Metadata } from "next";
@@ -85,7 +86,7 @@ export default async function HomePage() {
         }}
       />
 
-      <section className="studio-hero">
+      <section className="studio-hero"><Image src="/gallery/643338086.jpg" alt="" fill sizes="100vw" className="hero-scene" priority/><div className="hero-scene-shade"/>
         <div className="container-page hero-layout">
           <div className="hero-copy">
             <span className="eyebrow">POMEX / SHIRAZ · پومکس شیراز</span>
@@ -94,17 +95,23 @@ export default async function HomePage() {
             <div className="hero-actions"><CallToOrderButton label="مشاوره و استعلام قیمت" size="lg" className="w-auto"/><Link href="/products" className="btn-outline">کشف محصولات ↙</Link></div>
             <div className="hero-notes"><span>مشاوره پیش از خرید</span><span>هماهنگی ارسال در فارس</span><span>انتخاب بر اساس پروژه</span></div>
           </div>
-          <div className="hero-art"><img src="/gallery/header.png" alt="محصولات ساختمانی پومکس برای پروژه‌های شیراز" width="800" height="700" fetchPriority="high"/><div className="project-label"><span>از زیرسازی تا آخرین اتصال</span><strong>برای جزئیاتی که ماندگارند.</strong></div><span className="art-index">01 / MATERIALS</span></div>
+          <div className="hero-photo-collage"><div className="collage-main"><Image src="/gallery/Construction-workers-concrete.webp" alt="اجرای بتن در ساختمان" fill sizes="(max-width:768px) 90vw, 40vw" priority/><span>از پیِ ساختمان، تا جزئیات نهایی</span></div><div className="collage-detail"><Image src="/gallery/Apply%20the%20Adhesive.jpg.webp" alt="اجرای چسب کاشی با ماله شانه‌ای" fill sizes="220px"/></div><div className="collage-water"><Image src="/gallery/Cementitious%20Waterproofing.webp" alt="اجرای پوشش آب‌بندی سیمانی" fill sizes="220px"/></div><div className="collage-tag">چسب کاشی · آب‌بندی · بتن<strong>ساختن، با انتخاب درست.</strong></div></div>
         </div>
       </section>
       <section className="container-page project-picker"><div><span className="eyebrow">از نیاز پروژه شروع کنید</span><h2>برای کدام بخش ساختمان؟</h2></div><Link href="/products?category=چسب%20کاشی">نصب کاشی و پرسلان ↙</Link><Link href="/products?category=آب%20بندی">رفع نم و آب‌بندی ↙</Link><Link href="/products?category=افزودنی%20بتن">اجرای بتن ↙</Link></section>
 
       <div className="material-ribbon" aria-label="حوزه‌های محصولات"><div>{[0,1].map(i=><span key={i} aria-hidden={i===1}>POMEX ✦ چسب کاشی و پرسلان ✦ آب‌بندی استخر و تراس ✦ افزودنی‌های بتن ✦ مشاوره انتخاب محصول ✦ شیراز و استان فارس ✦ </span>)}</div></div>
       <section className="container-page py-14"><Reveal className="section-heading"><div><span className="eyebrow">راهکار، برای هر مرحلهٔ ساخت</span><h2 className="section-title mt-3">از یک اتصال دقیق، تا یک سازهٔ ماندگار</h2></div><Link href="/products">همهٔ محصولات ↙</Link></Reveal><div className="application-grid">{[
-        {title:'نصب دقیق. نمای یکدست.',label:'چسب کاشی و سرامیک',image:'/gallery/header.png',category:'چسب کاشی',text:'برای انتخاب چسب متناسب با پرسلان، کاشی و نوع زیرکار.'},
-        {title:'رطوبت را جدی بگیرید.',label:'سیستم‌های آب‌بندی',image:'/gallery/warehouse-1.jpg',category:'آب بندی',text:'بررسی راهکار مناسب استخر، تراس و محیط‌های مرطوب.'},
-        {title:'کیفیت، از زیرسازی شروع می‌شود.',label:'افزودنی‌های بتن',image:'/gallery/warehouse-2.jpg',category:'افزودنی بتن',text:'انتخاب افزودنی با توجه به نیاز فنی و شرایط اجرا.'}
+        {title:'نصب دقیق. نمای یکدست.',label:'چسب کاشی و سرامیک',image:'/gallery/Apply%20the%20Adhesive.jpg.webp',category:'چسب کاشی',text:'برای انتخاب چسب متناسب با پرسلان، کاشی و نوع زیرکار.'},
+        {title:'رطوبت را جدی بگیرید.',label:'سیستم‌های آب‌بندی',image:'/gallery/Cementitious%20Waterproofing.webp',category:'آب بندی',text:'بررسی راهکار مناسب استخر، تراس و محیط‌های مرطوب.'},
+        {title:'کیفیت، از زیرسازی شروع می‌شود.',label:'افزودنی‌های بتن',image:'/gallery/Construction-workers-concrete.webp',category:'افزودنی بتن',text:'انتخاب افزودنی با توجه به نیاز فنی و شرایط اجرا.'}
       ].map((item,i)=><MotionCard key={item.category} delay={i*.1} className="application-card"><img src={item.image} alt={item.label+' پومکس شیراز'} width="650" height="500" loading="lazy"/><div><span>0{i+1} / {item.label}</span><h3>{item.title}</h3><p>{item.text}</p><Link href={`/products?category=${encodeURIComponent(item.category)}`}>انتخاب محصول ↙</Link></div></MotionCard>)}</div></section>
+      <section className="inspiration-section container-page"><div className="section-heading"><div><span className="eyebrow">از اجرا تا نتیجه</span><h2 className="section-title mt-3">هر فضا، یک داستان تازه برای ساختن</h2></div><p>تصاویر کاربردها و مراحل اجرا</p></div><div className="inspiration-grid">{[
+{src:'/gallery/Backyardpool.jpg',title:'آرامش، کنار آب',sub:'بررسی راهکارهای آب‌بندی استخر',category:'آب بندی'},
+{src:'/gallery/Bostik-DIY-UK-How-to-tile-a-wall-using-ready-step-4.jpg',title:'جزئیات، تفاوت می‌سازند',sub:'انتخاب چسب برای نصب کاشی',category:'چسب کاشی'},
+{src:'/gallery/concrete-grade-3-betonparszagros.jpg',title:'شروعی محکم',sub:'افزودنی‌های بتن و نیازهای اجرا',category:'افزودنی بتن'},
+{src:'/gallery/images.jpg',title:'در برابر رطوبت',sub:'آشنایی با مواد آب‌بندی',category:'آب بندی'}
+].map((item,i)=><Link href={`/products?category=${encodeURIComponent(item.category)}`} className={`inspiration-tile tile-${i}`} key={item.title}><Image src={item.src} alt={item.sub} fill sizes="(max-width:768px) 90vw, 50vw"/><div><span>{item.sub}</span><h3>{item.title}</h3><b>کشف راهکار ↙</b></div></Link>)}</div><p className="mt-4 text-sm text-slate-500">تصاویر این بخش برای نمایش کاربردها هستند و به‌معنای اجرای این پروژه‌ها توسط نمایندگی نیستند.</p></section>
       <ProjectGuide/>
       <section className="showroom-band"><div className="container-page showroom-grid"><Reveal><span className="eyebrow">پشت این سایت، یک مسیر ارتباط واقعی است</span><h2>محصول را ببینید.<br/>سؤال بپرسید.<br/><em>با آگاهی سفارش بدهید.</em></h2><p>تصاویر فروشگاه و انبار را بررسی کنید و پیش از مراجعه، برای تأیید آدرس، موجودی و شرایط تحویل تماس بگیرید.</p><a className="btn-call" href={telHref(siteConfig.phone)}>ارتباط مستقیم · {siteConfig.phoneDisplay}</a></Reveal><div className="showroom-mosaic"><img src="/gallery/shop-1.jpg" alt="تصویر فروشگاه پومکس شیراز" width="700" height="600" loading="lazy"/><img src="/gallery/delivery.jpg" alt="آماده‌سازی سفارش محصولات" width="450" height="350" loading="lazy"/><div><span>مشاوره تا سفارش</span><strong>یک تماس، شروع انتخاب بهتر.</strong><Link href="/contact">راه‌های ارتباطی ↙</Link></div></div></div></section>
       {/* Product lines */}
