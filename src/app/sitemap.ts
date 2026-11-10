@@ -2,6 +2,8 @@ import { MetadataRoute } from "next";
 import { siteConfig } from "@/lib/siteConfig";
 import { getProducts, getPosts, safe } from "@/lib/data";
 
+export const revalidate = 300;
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const staticRoutes: MetadataRoute.Sitemap = [
     { url: siteConfig.url, changeFrequency: "daily", priority: 1 },
@@ -24,9 +26,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.8,
     }));
 
-    const postRoutes: MetadataRoute.Sitemap = posts.filter(p => !p.sourceUrl).map((p) => ({
-      url: `${siteConfig.url}/blog/${p.slug}`,
-      lastModified: new Date(p.updatedAt),
+    const postRoutes: MetadataRoute.Sitemap = posts.map((p) => ({
+      url: `${siteConfig.url}/blog/${encodeURIComponent(p.slug)}`,
+      lastModified: Number.isNaN(Date.parse(p.updatedAt)) ? undefined : new Date(p.updatedAt),
       changeFrequency: "monthly",
       priority: 0.6,
     }));
