@@ -1,3 +1,4 @@
+import { getPomexPosts, hasPomexSource } from "./pomexPosts";
 import { dbConnect } from "@/lib/mongodb";
 import Product, { IProduct, toProductId } from "@/models/Product";
 import BlogPost, { IBlogPost } from "@/models/BlogPost";
@@ -10,6 +11,7 @@ export type PlainProduct = Omit<IProduct, "_id" | "createdAt" | "updatedAt"> & {
 
 export type PlainPost = Omit<IBlogPost, "_id" | "createdAt" | "updatedAt"> & {
   _id: string;
+  sourceUrl?: string;
   createdAt: string;
   updatedAt: string;
 };
@@ -76,6 +78,11 @@ export async function getPosts(opts?: {
   q?: string;
   limit?: number;
 }): Promise<PlainPost[]> {
+  if (hasPomexSource()) {
+    let posts = await getPomexPosts();
+    if (opts?.q) { const q = opts.q.toLocaleLowerCase(); posts = posts.filter(p => `${p.title} ${p.excerpt} ${p.tags.join(' ')}`.toLocaleLowerCase().includes(q)); }
+    return opts?.limit ? posts.slice(0, opts.limit) : posts;
+  }
   await dbConnect();
   const filter: Record<string, unknown> = { published: true };
   if (opts?.q) filter.$text = { $search: opts.q };
@@ -106,6 +113,7 @@ export async function getProductByIdAdmin(id: string): Promise<PlainProduct | nu
 }
 
 export async function getPostBySlug(slug: string): Promise<PlainPost | null> {
+  if (hasPomexSource()) return (await getPomexPosts()).find(p => p.slug === slug) || null;
   await dbConnect();
   const doc = await BlogPost.findOne({ slug, published: true }).lean();
   return doc ? serialize(doc) : null;
@@ -129,6 +137,7 @@ export async function getRelatedPosts(
   excludeSlug: string,
   limit = 3
 ): Promise<PlainPost[]> {
+  if (hasPomexSource()) return (await getPomexPosts()).filter(p => p.slug !== excludeSlug).slice(0, limit);
   await dbConnect();
   const docs = await BlogPost.find({ slug: { $ne: excludeSlug }, published: true })
     .sort({ createdAt: -1 })

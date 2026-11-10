@@ -1,3 +1,4 @@
+import sanitizeHtml from "sanitize-html";
 import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
@@ -24,7 +25,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title,
     description,
-    alternates: { canonical: `/blog/${post.slug}` },
+    alternates: { canonical: post.sourceUrl || `/blog/${post.slug}` },
     openGraph: {
       title,
       description,
@@ -87,11 +88,9 @@ export default async function BlogPostPage({ params }: Props) {
           </div>
         )}
 
-        <div className="prose prose-fa mt-8 max-w-none leading-8">
-          {post.content.split("\n").map((paragraph, i) =>
-            paragraph.trim() ? <p key={i}>{paragraph}</p> : null
-          )}
-        </div>
+        {post.sourceUrl && <p className="mt-6 text-sm text-slate-500">منبع: <a href={post.sourceUrl} className="underline">دانشنامه پومکس</a></p>}
+        <div className="prose prose-fa mt-8 max-w-none leading-8" dangerouslySetInnerHTML={{ __html: sanitizeHtml(/<\/?[a-z][^>]*>/i.test(post.content) ? post.content : post.content.split('\n').map(p => `<p>${p.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')}</p>`).join(''), { allowedTags: sanitizeHtml.defaults.allowedTags.concat(['img']), allowedAttributes: { ...sanitizeHtml.defaults.allowedAttributes, img: ['src', 'alt', 'width', 'height', 'loading'] }, transformTags: { img: (tagName, attribs) => ({ tagName, attribs: { ...attribs, src: new URL(attribs.src || '', 'https://pomexlux.com').href, loading: 'lazy' } }), a: (tagName, attribs) => ({ tagName, attribs: { ...attribs, href: attribs.href?.startsWith('/') ? `https://pomexlux.com${attribs.href}` : attribs.href } }) } }) }} />
+        <aside className="mt-10 rounded-2xl bg-brand-900 p-6 text-white"><h2 className="text-xl font-bold">این راهکار را برای پروژهٔ شیراز می‌خواهید؟</h2><p className="my-4">برای انتخاب محصول و استعلام موجودی با پومکس شیراز صحبت کنید.</p><a className="btn-call" href={`tel:${siteConfig.phone}`}>مشاوره و خرید · {siteConfig.phoneDisplay}</a></aside>
 
         {post.tags?.length > 0 && (
           <div className="mt-8 flex flex-wrap gap-2">
